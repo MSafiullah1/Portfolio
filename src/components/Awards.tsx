@@ -1,6 +1,12 @@
 export default function Awards() {
     const awards = [
       {
+        date: "July, 2025",
+        title: "Award of High Distinction",
+        institution: "LUMS",
+        description: "Awarded to students graduating with a CGPA of 3.80 or higher."
+      },
+      {
         date: "August, 2024",
         title: "Dean's Honour List 2023-24",
         institution: "LUMS",

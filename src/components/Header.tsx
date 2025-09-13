@@ -2,15 +2,24 @@
 
 import Link from 'next/link'
 import { useTheme } from 'next-themes'
-import { Moon, Sun, Menu, X } from 'lucide-react'
+import { Moon, Sun, Menu, X, Sparkles } from 'lucide-react'
 import { useEffect, useState } from 'react'
 
 export default function Header() {
   const { theme, setTheme } = useTheme()
   const [mounted, setMounted] = useState(false)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const [scrolled, setScrolled] = useState(false)
 
   useEffect(() => setMounted(true), [])
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 50)
+    }
+    window.addEventListener('scroll', handleScroll)
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [])
 
   useEffect(() => {
     if (mobileMenuOpen) {
@@ -23,13 +32,13 @@ export default function Header() {
   if (!mounted) return null
 
   const navItems = [
-    { href: "#home", label: "Home" },
-    { href: "#about", label: "About" },
-    { href: "#education", label: "Education" },
-    { href: "#experience", label: "Experience" },
-    { href: "#projects", label: "Projects" },
-    { href: "#skills", label: "Skills" },
-    { href: "#contact", label: "Contact" },
+    { href: "#home", label: "Home", icon: "🏠" },
+    { href: "#about", label: "About", icon: "👨‍💻" },
+    { href: "#education", label: "Education", icon: "🎓" },
+    { href: "#experience", label: "Experience", icon: "💼" },
+    { href: "#projects", label: "Projects", icon: "🚀" },
+    { href: "#skills", label: "Skills", icon: "⚡" },
+    { href: "#contact", label: "Contact", icon: "📬" },
   ]
 
   const NavItems = ({ mobile = false }) => (
@@ -38,12 +47,18 @@ export default function Header() {
         <li key={item.href}>
           <Link
             href={item.href}
-            className={`text-gray-700 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors ${
-              mobile ? 'block text-lg py-2' : ''
-            }`}
+            className={`group relative transition-all duration-300 ${
+              mobile 
+                ? 'flex items-center gap-3 text-lg py-3 px-4 rounded-xl hover:bg-white/10 dark:hover:bg-gray-800/50' 
+                : 'px-4 py-2 rounded-xl hover:bg-white/20 dark:hover:bg-gray-800/50'
+            } text-gray-700 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 font-medium`}
             onClick={() => mobile && setMobileMenuOpen(false)}
           >
+            {mobile && <span className="text-xl">{item.icon}</span>}
             {item.label}
+            {!mobile && (
+              <span className="absolute inset-x-0 -bottom-1 h-0.5 bg-gradient-to-r from-indigo-500 to-purple-500 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></span>
+            )}
           </Link>
         </li>
       ))}
@@ -51,53 +66,106 @@ export default function Header() {
   )
 
   return (
-    <header className="bg-white dark:bg-gray-800 shadow-sm sticky top-0 z-10">
+    <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+      scrolled 
+        ? 'glass backdrop-blur-xl border-b border-white/20 dark:border-gray-800/50' 
+        : 'bg-transparent'
+    }`}>
       <nav className="container mx-auto px-6 py-4">
         <div className="flex justify-between items-center">
-          <Link href="/" className="text-2xl font-bold text-indigo-600 dark:text-indigo-400 hover:text-indigo-800 dark:hover:text-indigo-200 transition-colors">
-            Muhammad Safiullah
+          {/* Logo */}
+          <Link 
+            href="/" 
+            className="group flex items-center gap-2 text-2xl font-bold gradient-text hover:scale-105 transition-transform duration-300"
+          >
+            <Sparkles className="w-6 h-6 text-indigo-500 group-hover:rotate-12 transition-transform duration-300" />
+            Safiullah Sarfraz
           </Link>
-          <div className="hidden md:flex space-x-6 items-center">
-            <ul className="flex space-x-6 items-center">
+
+          {/* Desktop Navigation */}
+          <div className="hidden lg:flex items-center gap-8">
+            <ul className="flex items-center gap-2">
               <NavItems />
             </ul>
+            
+            {/* Theme Toggle */}
             <button
               onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
-              className="p-2 rounded-full bg-gray-200 dark:bg-gray-700"
+              className="p-3 rounded-xl glass hover:scale-110 transition-all duration-300 group"
+              aria-label="Toggle theme"
             >
-              {theme === 'dark' ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
+              {theme === 'dark' ? (
+                <Sun className="w-5 h-5 text-yellow-500 group-hover:rotate-12 transition-transform duration-300" />
+              ) : (
+                <Moon className="w-5 h-5 text-indigo-600 group-hover:-rotate-12 transition-transform duration-300" />
+              )}
             </button>
           </div>
-          <div className="md:hidden flex items-center">
+
+          {/* Mobile Controls */}
+          <div className="lg:hidden flex items-center gap-3">
             <button
               onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
-              className="p-2 rounded-full bg-gray-200 dark:bg-gray-700 mr-2"
+              className="p-2 rounded-xl glass hover:scale-110 transition-all duration-300"
+              aria-label="Toggle theme"
             >
-              {theme === 'dark' ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
+              {theme === 'dark' ? (
+                <Sun className="w-5 h-5 text-yellow-500" />
+              ) : (
+                <Moon className="w-5 h-5 text-indigo-600" />
+              )}
             </button>
+            
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="text-gray-700 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400"
+              className="p-2 rounded-xl glass hover:scale-110 transition-all duration-300"
+              aria-label="Toggle menu"
             >
-              {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+              {mobileMenuOpen ? (
+                <X className="w-6 h-6 text-gray-700 dark:text-gray-300" />
+              ) : (
+                <Menu className="w-6 h-6 text-gray-700 dark:text-gray-300" />
+              )}
             </button>
           </div>
         </div>
+
+        {/* Mobile Menu Overlay */}
         {mobileMenuOpen && (
-          <div className="fixed inset-0 z-50 bg-black bg-opacity-50 md:hidden">
-            <div className="fixed inset-y-0 right-0 max-w-xs w-full bg-white dark:bg-gray-800 shadow-xl p-6">
+          <div className="fixed inset-0 z-50 lg:hidden">
+            {/* Backdrop */}
+            <div 
+              className="absolute inset-0 bg-black/50 backdrop-blur-sm"
+              onClick={() => setMobileMenuOpen(false)}
+            ></div>
+            
+            {/* Menu Panel */}
+            <div className="absolute top-0 right-0 h-full w-80 max-w-[90vw] glass border-l border-white/20 dark:border-gray-800/50 p-6 animate-fade-in-right">
+              {/* Header */}
               <div className="flex justify-between items-center mb-8">
-                <h2 className="text-2xl font-bold text-indigo-600 dark:text-indigo-400">Menu</h2>
+                <h2 className="text-2xl font-bold gradient-text flex items-center gap-2">
+                  <Sparkles className="w-6 h-6" />
+                  Menu
+                </h2>
                 <button
                   onClick={() => setMobileMenuOpen(false)}
-                  className="text-gray-700 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400"
+                  className="p-2 rounded-xl hover:bg-white/10 dark:hover:bg-gray-800/50 transition-colors"
                 >
-                  <X className="w-6 h-6" />
+                  <X className="w-6 h-6 text-gray-700 dark:text-gray-300" />
                 </button>
               </div>
-              <ul className="space-y-4">
+
+              {/* Navigation */}
+              <ul className="space-y-2">
                 <NavItems mobile />
               </ul>
+
+              {/* Footer */}
+              <div className="absolute bottom-6 left-6 right-6">
+                <div className="text-center text-sm text-gray-500 dark:text-gray-400">
+                  <p>Made with ❤️ by Safiullah</p>
+                </div>
+              </div>
             </div>
           </div>
         )}

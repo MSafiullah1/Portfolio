@@ -1,5 +1,3 @@
-'use client'
-
 import './globals.css'
 import { ThemeProvider } from 'next-themes'
 import { Inter } from 'next/font/google'
@@ -14,7 +12,7 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en" className="scroll-smooth">
+    <html lang="en" className="scroll-smooth" suppressHydrationWarning>
       <body className={inter.className}>
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <div className="flex flex-col min-h-screen dark:bg-gray-900 dark:text-white">
