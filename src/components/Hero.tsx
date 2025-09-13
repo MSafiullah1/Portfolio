@@ -92,14 +92,14 @@ export default function Hero() {
           {/* Right Content - Image */}
           <div className={`flex justify-center lg:justify-end ${isVisible ? 'animate-fade-in-right' : 'opacity-0'}`}>
             <div className="relative">
-              {/* Gradient Ring */}
-              <div className="absolute inset-0 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 rounded-full animate-spin-slow opacity-75 blur-sm"></div>
-              <div className="absolute inset-2 bg-gradient-to-r from-purple-500 via-pink-500 to-indigo-500 rounded-full animate-spin-slow opacity-50 blur-md delay-1000"></div>
+              {/* Masculine Gradient Ring */}
+              <div className="absolute inset-0 bg-gradient-to-r from-slate-700 via-blue-600 to-indigo-700 rounded-full animate-spin-slow opacity-75 blur-sm"></div>
+              <div className="absolute inset-2 bg-gradient-to-r from-gray-700 via-slate-600 to-blue-700 rounded-full animate-spin-slow opacity-50 blur-md delay-1000"></div>
               
               {/* Profile Image */}
               <div className="relative z-10 p-2">
-        <Image
-          src={imgSrc}
+                <Image
+                  src={imgSrc}
                   alt="Safiullah Sarfraz"
                   width={400}
                   height={400}
@@ -150,4 +150,3 @@ export default function Hero() {
     </section>
   )
 }
-
