@@ -1,365 +1,379 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+/* ==========================================================================
+   Design tokens
+
+   Values are space-separated RGB triplets so Tailwind's <alpha-value>
+   placeholder resolves: rgb(var(--accent) / <alpha-value>).
+   Dark mode re-maps the tokens; it never duplicates component rules.
+
+   Accent is reserved for actions. Metrics, honours, availability and errors
+   each carry their own semantic token so colour always means something.
+   ========================================================================== */
+
 :root {
-  /* Brand Colors */
-  --brand-primary: 59, 130, 246; /* blue-500 */
-  --brand-secondary: 37, 99, 235; /* blue-600 */
-  --brand-accent: 29, 78, 216; /* blue-700 */
-  
-  /* Surface Colors */
-  --surface-primary: 255, 255, 255;
-  --surface-secondary: 249, 250, 251; /* gray-50 */
-  --surface-tertiary: 243, 244, 246; /* gray-100 */
-  --surface-glass: 255, 255, 255, 0.1;
-  
-  /* Text Colors */
-  --text-primary: 17, 24, 39; /* gray-900 */
-  --text-secondary: 75, 85, 99; /* gray-600 */
-  --text-muted: 156, 163, 175; /* gray-400 */
-  
-  /* Dark Mode Colors */
-  --dark-surface-primary: 17, 24, 39; /* gray-900 */
-  --dark-surface-secondary: 31, 41, 55; /* gray-800 */
-  --dark-surface-tertiary: 55, 65, 81; /* gray-700 */
-  --dark-surface-glass: 0, 0, 0, 0.2;
-  
-  --dark-text-primary: 249, 250, 251; /* gray-50 */
-  --dark-text-secondary: 209, 213, 219; /* gray-300 */
-  --dark-text-muted: 156, 163, 175; /* gray-400 */
-  
-  /* Neon Colors for Dark Mode */
-  --neon-blue: 59, 130, 246; /* blue-500 */
-  --neon-cyan: 6, 182, 212; /* cyan-500 */
-  --neon-indigo: 99, 102, 241; /* indigo-500 */
-  
-  /* Spacing */
-  --spacing-xs: 0.5rem;
-  --spacing-sm: 1rem;
-  --spacing-md: 1.5rem;
-  --spacing-lg: 2rem;
-  --spacing-xl: 3rem;
-  --spacing-2xl: 4rem;
-  
-  /* Shadows */
-  --shadow-soft: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-  --shadow-medium: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-  --shadow-large: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-  --shadow-glow: 0 0 20px rgba(var(--brand-primary), 0.3);
-  --shadow-neon: 0 0 30px rgba(var(--neon-cyan), 0.5);
+  color-scheme: light;
+
+  --ease-out: cubic-bezier(.22, 1, .36, 1);
+
+  /* Surfaces: cool off-white, not cream */
+  --paper: 251 250 248;
+  --surface: 255 255 255;
+
+  /* Text */
+  --ink: 20 24 31;
+  --ink-2: 61 68 79;
+  --muted: 90 98 112;         /* 5.5:1 on paper, AA for body text */
+
+  /* Borders */
+  --line: 228 230 234;
+  --line-strong: 205 209 216;
+
+  /* Accent: actions, links, active state */
+  --accent: 67 56 202;        /* 8.3:1 on paper */
+  --accent-hover: 55 48 163;
+  --accent-fg: 255 255 255;
+
+  /* --- Semantic, deliberately separate from the accent --- */
+
+  /* Metrics and measured results */
+  --signal: 15 118 110;
+
+  /* Honours, awards, "Current" */
+  --honour: 124 74 3;
+  --honour-tint: 245 158 11;
+
+  /* Availability */
+  --success: 21 128 61;
+
+  /* Form errors */
+  --danger: 180 35 24;
+
+  --radius-card: 10px;
+
+  --shadow-sm: 0 1px 2px rgb(20 24 31 / 0.05), 0 1px 3px rgb(20 24 31 / 0.04);
+  --shadow-md: 0 4px 12px rgb(20 24 31 / 0.07), 0 2px 4px rgb(20 24 31 / 0.04);
+  --shadow-lg: 0 12px 32px rgb(20 24 31 / 0.10), 0 4px 8px rgb(20 24 31 / 0.05);
 }
 
-* {
-  box-sizing: border-box;
-  padding: 0;
-  margin: 0;
+.dark {
+  color-scheme: dark;
+
+  --paper: 7 11 20;
+  --surface: 13 21 34;
+
+  --ink: 238 242 248;
+  --ink-2: 195 204 218;
+  --muted: 148 161 182;       /* 7.0:1 on paper */
+
+  --line: 30 42 61;
+  --line-strong: 44 59 82;
+
+  --accent: 139 149 247;
+  --accent-hover: 168 176 250;
+  --accent-fg: 10 12 16;
+
+  --signal: 79 209 197;
+
+  --honour: 247 201 123;
+  --honour-tint: 245 158 11;
+
+  --success: 74 222 128;
+
+  --danger: 255 138 128;
+
+  --shadow-sm: 0 1px 2px rgb(0 0 0 / 0.45);
+  --shadow-md: 0 4px 12px rgb(0 0 0 / 0.50);
+  --shadow-lg: 0 12px 32px rgb(0 0 0 / 0.60);
 }
 
-html {
-  scroll-behavior: smooth;
-}
-
-body {
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  line-height: 1.6;
-  color: rgb(var(--text-primary));
-  background: rgb(var(--surface-primary));
-  transition: background-color 0.3s ease, color 0.3s ease;
-}
-
-.dark body {
-  color: rgb(var(--dark-text-primary));
-  background: rgb(var(--dark-surface-primary));
-}
-
-/* Typography */
-h1, h2, h3, h4, h5, h6 {
-  font-family: 'Space Grotesk', 'Inter', sans-serif;
-  font-weight: 700;
-  line-height: 1.2;
-  letter-spacing: -0.025em;
-}
-
-/* Gradient Text */
-.gradient-text {
-  background: linear-gradient(135deg, rgb(var(--brand-primary)), rgb(var(--brand-secondary)), rgb(var(--brand-accent)));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-.dark .gradient-text {
-  background: linear-gradient(135deg, rgb(var(--neon-blue)), rgb(var(--neon-cyan)), rgb(var(--neon-indigo)));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-/* Glassmorphism */
-.glass {
-  background: rgba(var(--surface-glass));
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-}
-
-.dark .glass {
-  background: rgba(var(--dark-surface-glass));
-  border: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-/* Fancy Buttons */
-.btn-primary {
-  @apply px-8 py-4 rounded-xl font-semibold text-white transition-all duration-300 ease-out;
-  background: linear-gradient(135deg, rgb(var(--brand-primary)), rgb(var(--brand-secondary)));
-  box-shadow: var(--shadow-soft);
-  transform: translateY(0);
-}
-
-.btn-primary:hover {
-  transform: translateY(-2px) scale(1.02);
-  box-shadow: var(--shadow-glow), var(--shadow-medium);
-}
-
-.btn-primary:active {
-  transform: translateY(0) scale(0.98);
-}
-
-.dark .btn-primary {
-  background: linear-gradient(135deg, rgb(var(--neon-blue)), rgb(var(--neon-cyan)));
-  box-shadow: var(--shadow-neon), var(--shadow-soft);
-}
-
-.btn-secondary {
-  @apply px-8 py-4 rounded-xl font-semibold transition-all duration-300 ease-out;
-  background: rgba(var(--surface-glass));
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(var(--brand-primary), 0.3);
-  color: rgb(var(--brand-primary));
-  transform: translateY(0);
-}
-
-.btn-secondary:hover {
-  transform: translateY(-2px) scale(1.02);
-  background: rgba(var(--brand-primary), 0.1);
-  border-color: rgba(var(--brand-primary), 0.5);
-  box-shadow: var(--shadow-medium);
-}
-
-.dark .btn-secondary {
-  background: rgba(var(--dark-surface-glass));
-  border-color: rgba(var(--neon-blue), 0.3);
-  color: rgb(var(--neon-blue));
-}
-
-.dark .btn-secondary:hover {
-  background: rgba(var(--neon-blue), 0.1);
-  border-color: rgba(var(--neon-blue), 0.5);
-  box-shadow: 0 0 20px rgba(var(--neon-blue), 0.3);
-}
-
-/* Card Styles */
-.card-modern {
-  @apply rounded-xl transition-all duration-300 ease-out;
-  background: rgb(var(--surface-primary));
-  box-shadow: var(--shadow-soft);
-  border: 1px solid rgba(var(--text-muted), 0.1);
-  transform: translateY(0);
-}
-
-.card-modern:hover {
-  transform: translateY(-4px);
-  box-shadow: var(--shadow-large);
-}
-
-.dark .card-modern {
-  background: rgb(var(--dark-surface-secondary));
-  border-color: rgba(var(--dark-text-muted), 0.2);
-}
-
-/* Animations */
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(30px);
+@layer base {
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
   }
-  to {
-    opacity: 1;
-    transform: translateY(0);
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    font-size: 17px;
+    line-height: 1.7;
+    color: rgb(var(--ink));
+    background: rgb(var(--paper));
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-display), system-ui, sans-serif;
+    color: rgb(var(--ink));
+    text-wrap: balance;
+  }
+
+  h1 { font-weight: 700; line-height: 1.06; letter-spacing: -0.03em; }
+  h2 { font-weight: 600; line-height: 1.15; letter-spacing: -0.025em; }
+  h3 { font-weight: 600; line-height: 1.25; letter-spacing: -0.015em; }
+  h4, h5, h6 { font-weight: 600; line-height: 1.35; letter-spacing: -0.01em; }
+
+  /* Single global focus ring. Every interactive element inherits it. */
+  :focus-visible {
+    outline: 2px solid rgb(var(--accent));
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+
+  /* Only suppress the default ring where :focus-visible is supported. */
+  :focus:not(:focus-visible) {
+    outline: none;
+  }
+
+  ::selection {
+    background: rgb(var(--accent) / 0.18);
+    color: rgb(var(--ink));
   }
 }
 
-@keyframes fadeInLeft {
-  from {
-    opacity: 0;
-    transform: translateX(-30px);
+@layer components {
+
+  /* --- Buttons --- */
+
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-lg font-medium
+           transition-colors duration-150 whitespace-nowrap;
   }
-  to {
-    opacity: 1;
-    transform: translateX(0);
+
+  .btn-primary {
+    background: rgb(var(--accent));
+    color: rgb(var(--accent-fg));
   }
-}
-
-@keyframes fadeInRight {
-  from {
-    opacity: 0;
-    transform: translateX(30px);
+  .btn-primary:hover {
+    background: rgb(var(--accent-hover));
   }
-  to {
-    opacity: 1;
-    transform: translateX(0);
+
+  .btn-secondary {
+    background: transparent;
+    color: rgb(var(--ink));
+    border: 1px solid rgb(var(--line-strong));
   }
-}
-
-@keyframes glow {
-  0%, 100% {
-    box-shadow: 0 0 20px rgba(var(--brand-primary), 0.3);
+  .btn-secondary:hover {
+    border-color: rgb(var(--accent));
+    color: rgb(var(--accent));
+    background: rgb(var(--accent) / 0.06);
   }
-  50% {
-    box-shadow: 0 0 30px rgba(var(--brand-primary), 0.6);
+
+  /* --- Tags --- */
+
+  .tag {
+    @apply inline-flex items-center max-w-full rounded-md;
+    word-break: break-word;
   }
-}
 
-/* 3D Animations */
-@keyframes float3d {
-  0%, 100% {
-    transform: translateY(0px) rotateX(0deg) rotateY(0deg);
+  .tag-skill {
+    @apply px-2.5 py-1 text-xs font-semibold;
+    color: rgb(var(--accent));
+    background: rgb(var(--accent) / 0.10);
+    border: 1px solid rgb(var(--accent) / 0.22);
   }
-  33% {
-    transform: translateY(-20px) rotateX(10deg) rotateY(5deg);
+
+  .tag-tech {
+    @apply px-2 py-0.5 font-mono text-[0.72rem] leading-relaxed;
+    color: rgb(var(--ink-2));
+    background: rgb(var(--ink) / 0.05);
+    border: 1px solid rgb(var(--line));
   }
-  66% {
-    transform: translateY(-10px) rotateX(-5deg) rotateY(-10deg);
+
+  .tag-honor {
+    @apply rounded-full px-2.5 py-0.5 text-xs font-semibold;
+    color: rgb(var(--honour));
+    background: rgb(var(--honour-tint) / 0.14);
+    border: 1px solid rgb(var(--honour-tint) / 0.32);
   }
-}
 
-@keyframes rotate3d {
-  0% {
-    transform: rotateX(0deg) rotateY(0deg) rotateZ(0deg);
+  .tag-course {
+    @apply px-2 py-0.5 text-xs leading-relaxed;
+    color: rgb(var(--muted));
+    background: transparent;
+    border: 1px dashed rgb(var(--line-strong));
   }
-  100% {
-    transform: rotateX(360deg) rotateY(360deg) rotateZ(360deg);
+
+  /* --- Cards ---------------------------------------------------------
+     One emphasis treatment, used everywhere: an accent-tinted surface with
+     an accent border. No left rail, because a coloured strip down one edge reads
+     as decoration rather than meaning, and it fought the section bands.
+
+     `--card-bg` is set by Section, so a card always contrasts with the band
+     it sits in without any per-card decision.
+     ------------------------------------------------------------------- */
+
+  .card {
+    @apply rounded-card;
+    background: rgb(var(--card-bg, var(--surface)));
+    border: 1px solid rgb(var(--line));
+    transition: transform .22s var(--ease-out), border-color .22s var(--ease-out),
+                box-shadow .22s var(--ease-out);
   }
-}
 
-@keyframes floatSlow {
-  0%, 100% {
-    transform: translateY(0px) translateX(0px);
+  /* A small lift and a fractional scale. Kept under 1 % — anything more and
+     the text inside visibly resamples during the transition. */
+  .card:hover {
+    transform: translateY(-2px) scale(1.006);
+    box-shadow: var(--shadow-md);
   }
-  25% {
-    transform: translateY(-15px) translateX(10px);
+
+  .card-default {
+    box-shadow: var(--shadow-sm);
   }
-  50% {
-    transform: translateY(-30px) translateX(-5px);
+  .card-default:hover {
+    border-color: rgb(var(--line-strong));
   }
-  75% {
-    transform: translateY(-10px) translateX(-15px);
+
+  /* Emphasis: featured skills, the current role, the first degree,
+     linked case studies. */
+  .card-feature {
+    background: rgb(var(--accent) / 0.05);
+    border-color: rgb(var(--accent) / 0.32);
+    box-shadow: var(--shadow-sm);
   }
-}
-
-@keyframes morphShape {
-  0%, 100% {
-    border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
+  .dark .card-feature {
+    background: rgb(var(--accent) / 0.09);
+    border-color: rgb(var(--accent) / 0.34);
   }
-  25% {
-    border-radius: 58% 42% 75% 25% / 76% 46% 54% 24%;
+  .card-feature:hover {
+    border-color: rgb(var(--accent) / 0.5);
+    box-shadow: var(--shadow-md);
   }
-  50% {
-    border-radius: 50% 50% 33% 67% / 55% 27% 73% 45%;
+
+  /* --- Gradient washes ------------------------------------------------
+     Only the gradient is painted here; the base colour comes from whatever
+     surface class sits alongside, so a wash composes with any section tone.
+
+     Three strengths, used sparingly:
+       hero    the opening statement, strongest
+       band    a call to action
+       subtle  gentle rhythm on an alternating band
+     ------------------------------------------------------------------- */
+
+  .wash-hero {
+    background-image:
+      radial-gradient(115% 78% at 76% 14%, rgb(var(--accent) / 0.10), transparent 58%),
+      radial-gradient(90% 70% at 10% 92%, rgb(var(--signal) / 0.05), transparent 60%);
   }
-  75% {
-    border-radius: 33% 67% 58% 42% / 63% 68% 32% 37%;
+  .dark .wash-hero {
+    background-image:
+      radial-gradient(115% 78% at 76% 14%, rgb(var(--accent) / 0.20), transparent 58%),
+      radial-gradient(90% 70% at 10% 92%, rgb(var(--signal) / 0.10), transparent 60%);
   }
-}
 
-.animate-fade-in-up {
-  animation: fadeInUp 0.6s ease-out;
-}
+  .wash-band {
+    background-image:
+      radial-gradient(70% 120% at 88% 50%, rgb(var(--accent) / 0.07), transparent 62%);
+  }
+  .dark .wash-band {
+    background-image:
+      radial-gradient(70% 120% at 88% 50%, rgb(var(--accent) / 0.14), transparent 62%);
+  }
 
-.animate-fade-in-left {
-  animation: fadeInLeft 0.6s ease-out;
-}
+  /* Page header on the inner routes: echoes the hero's top-right anchor so
+     every route opens with the same gradient language. */
+  .wash-top {
+    background-image:
+      radial-gradient(85% 95% at 84% -12%, rgb(var(--accent) / 0.07), transparent 62%);
+  }
+  .dark .wash-top {
+    background-image:
+      radial-gradient(85% 95% at 84% -12%, rgb(var(--accent) / 0.15), transparent 62%);
+  }
 
-.animate-fade-in-right {
-  animation: fadeInRight 0.6s ease-out;
-}
+  /* Roughly half the band strength, and anchored on the opposite side so a
+     page with both does not look like the same effect twice. */
+  .wash-subtle {
+    background-image:
+      radial-gradient(65% 110% at 8% 0%, rgb(var(--accent) / 0.035), transparent 58%);
+  }
+  .dark .wash-subtle {
+    background-image:
+      radial-gradient(65% 110% at 8% 0%, rgb(var(--accent) / 0.07), transparent 58%);
+  }
 
-.animate-glow {
-  animation: glow 2s ease-in-out infinite;
-}
+  /* Whole card is a link. */
+  .card-link:hover {
+    border-color: rgb(var(--accent) / 0.5);
+    box-shadow: var(--shadow-md);
+  }
 
-.animate-float-3d {
-  animation: float3d 6s ease-in-out infinite;
-}
-
-.animate-rotate-3d {
-  animation: rotate3d 20s linear infinite;
-}
-
-.animate-float-slow {
-  animation: floatSlow 8s ease-in-out infinite;
-}
-
-.animate-morph {
-  animation: morphShape 10s ease-in-out infinite;
-}
-
-/* Scroll Snap */
-.scroll-snap-x {
-  scroll-snap-type: x mandatory;
-  -webkit-overflow-scrolling: touch;
-}
-
-.scroll-snap-item {
-  scroll-snap-align: center;
-}
-
-/* Custom Scrollbar */
-::-webkit-scrollbar {
-  width: 8px;
-}
-
-::-webkit-scrollbar-track {
-  background: rgb(var(--surface-secondary));
-}
-
-::-webkit-scrollbar-thumb {
-  background: linear-gradient(135deg, rgb(var(--brand-primary)), rgb(var(--brand-secondary)));
-  border-radius: 4px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(135deg, rgb(var(--brand-secondary)), rgb(var(--brand-accent)));
-}
-
-.dark ::-webkit-scrollbar-track {
-  background: rgb(var(--dark-surface-secondary));
-}
-
-.dark ::-webkit-scrollbar-thumb {
-  background: linear-gradient(135deg, rgb(var(--neon-blue)), rgb(var(--neon-cyan)));
 }
 
 @layer utilities {
-  .text-balance {
-    text-wrap: balance;
+  .text-pretty  { text-wrap: pretty; }
+
+  /* ---- Motion -------------------------------------------------------
+     Everything here is additive: content is visible and correctly laid
+     out with JavaScript disabled and with animation suppressed. The
+     classes only add the transition into that final state.
+     `--d` staggers a group without a per-element rule.
+     ------------------------------------------------------------------ */
+
+  /* Scroll-triggered, applied by the Reveal wrapper once in view. */
+  .reveal { animation: rise .6s var(--ease-out) both; }
+
+  /* Load-triggered, for above-the-fold content that never waits on JS. */
+  .rise {
+    animation: rise .7s var(--ease-out) both;
+    animation-delay: var(--d, 0ms);
   }
-  
-  /* Spacing utilities */
-  .space-y-modern > * + * {
-    margin-top: var(--spacing-lg);
-  }
-  
-  .space-y-modern-sm > * + * {
-    margin-top: var(--spacing-md);
-  }
-  
-  .space-y-modern-lg > * + * {
-    margin-top: var(--spacing-xl);
+
+  /* Panel crossfade for tab switches and other in-place content swaps. */
+  .swap { animation: swap .28s var(--ease-out) both; }
+
+  /* Arrow nudge inside a hovered card. */
+  .nudge { transition: transform .22s var(--ease-out); }
+  .group:hover .nudge { transform: translate(2px, -2px); }
+
+  /* Availability dot on the hero status pill. */
+  .ping::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 999px;
+    background: currentColor;
+    animation: ping 2.4s cubic-bezier(0, 0, .2, 1) infinite;
   }
 }
 
+@keyframes rise {
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: none; }
+}
+
+@keyframes swap {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: none; }
+}
+
+@keyframes ping {
+  0%        { transform: scale(1);   opacity: .55; }
+  70%, 100% { transform: scale(2.6); opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+
+  /* Land directly in the finished state rather than animating to it. */
+  .reveal, .rise, .swap { animation: none; }
+  .card:hover { transform: none; }
+  .group:hover .nudge { transform: none; }
+  .ping::after { animation: none; opacity: 0; }
+
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

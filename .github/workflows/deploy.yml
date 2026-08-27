@@ -1,7 +1,0 @@
-name: Deploy static Next.js to GitHub Pages (disabled)
-
-on:
-  workflow_dispatch:
-
-jobs: {}
-

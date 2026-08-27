@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" role="img" aria-label="Perceptron mark">
+  <!-- Solid tile so the mark holds on both light and dark browser chrome. -->
+  <rect width="32" height="32" rx="7.5" fill="#4338CA"/>
+  <!-- Three inputs converging on one output: the smallest readable network.
+       Scaled to fill the tile, because 16px in a tab is the size that matters. -->
+  <g stroke="#ffffff" stroke-width="1.7" stroke-linecap="round" opacity="0.8">
+    <path d="M8.5 7 23 16"/>
+    <path d="M8.5 16 23 16"/>
+    <path d="M8.5 25 23 16"/>
+  </g>
+  <g fill="#ffffff">
+    <circle cx="8.5" cy="7" r="2.9"/>
+    <circle cx="8.5" cy="16" r="2.9"/>
+    <circle cx="8.5" cy="25" r="2.9"/>
+    <circle cx="23" cy="16" r="4.2"/>
+  </g>
+</svg>
